@@ -28,6 +28,8 @@ const C = {
 };
 
 // ─── SITE URL ─────────────────────────────────────────────────────────────────
+// Update this once you have your GitHub Pages URL, e.g.:
+// "https://yourusername.github.io/pour-decisions"
 const SITE_URL = "https://kimpanti.github.io/pourdecisions";
 
 // ─── CAREER DATA ──────────────────────────────────────────────────────────────
@@ -182,14 +184,115 @@ function ResultScreen({answers,onRestart}){
   const pers=[ordMod,patMod].filter(Boolean).join(" ");
   const dcol=DEMAND_COLOURS[dc.demand]||{bg:"#F3F4F6",tx:"#374151"};
 
-  function buildURL(){
-    const p=new URLSearchParams({drink:answers.drink||"",milk:answers.milk||"",flavour:answers.flavour||"",ordering:answers.ordering||"",pattern:answers.pattern||""});
-    return `${SITE_URL}?${p.toString()}`;
-  }
-  function handleCopy(){
-    const url=buildURL();
-    const txt=`☕ I got ${dc.career} on the Melbourne Coffee × Cyber Career Quiz!\n\n"${dc.tagline}"\n\nDid it get you right?\n${url}`;
-    navigator.clipboard?.writeText(txt).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2800);});
+  // ── Canvas share card — hero only, 1080×1080 ────────────────────────────────
+  function generateShareImage(){
+    setCopied(true);
+    setTimeout(()=>setCopied(false),3000);
+
+    const S=1080;
+    const cv=document.createElement("canvas");
+    cv.width=S; cv.height=S;
+    const ctx=cv.getContext("2d");
+
+    // Solid dark background — full bleed
+    ctx.fillStyle="#2C1A0E";
+    ctx.fillRect(0,0,S,S);
+
+    // Subtle warm grain texture via noise-like stipple
+    ctx.fillStyle="rgba(196,168,130,0.04)";
+    for(let i=0;i<6000;i++){
+      const x=Math.random()*S, y=Math.random()*S;
+      ctx.fillRect(x,y,1.5,1.5);
+    }
+
+    // Thin gold border inset
+    ctx.strokeStyle="#C8956A";
+    ctx.lineWidth=3;
+    ctx.strokeRect(40,40,S-80,S-80);
+
+    // Helper: wrap text, returns final y
+    function wrapText(text,x,y,maxW,lineH,maxLines){
+      const words=text.split(" ");
+      let line=""; let ly=y; let count=0;
+      for(let n=0;n<words.length;n++){
+        const test=line+words[n]+" ";
+        if(ctx.measureText(test).width>maxW&&n>0){
+          if(maxLines&&count>=maxLines-1){
+            ctx.fillText(line.trim()+"…",x,ly);
+            return ly;
+          }
+          ctx.fillText(line.trim(),x,ly);
+          line=words[n]+" "; ly+=lineH; count++;
+        } else { line=test; }
+      }
+      ctx.fillText(line.trim(),x,ly);
+      return ly;
+    }
+
+    // ☕ emoji — large, vertically centred upper third
+    ctx.textAlign="center";
+    ctx.font="160px serif";
+    ctx.fillText("☕",S/2,260);
+
+    // Drink label — gold, spaced caps
+    ctx.fillStyle="#C8956A";
+    ctx.font="500 30px Georgia,serif";
+    ctx.letterSpacing="6px";
+    ctx.fillText(dc.label.toUpperCase(),S/2,340);
+    ctx.letterSpacing="0px";
+
+    // Thin gold rule
+    ctx.strokeStyle="#C8956A";
+    ctx.lineWidth=1;
+    ctx.globalAlpha=0.4;
+    ctx.beginPath(); ctx.moveTo(200,370); ctx.lineTo(S-200,370); ctx.stroke();
+    ctx.globalAlpha=1;
+
+    // Career title — large, warm white, wrap if needed
+    ctx.fillStyle="#FFF8F0";
+    ctx.textAlign="center";
+    // Fit long titles: try 88px first, step down if too wide
+    let titleSize=88;
+    ctx.font=`bold ${titleSize}px Georgia,serif`;
+    while(ctx.measureText(dc.career).width>S-160&&titleSize>52){
+      titleSize-=4;
+      ctx.font=`bold ${titleSize}px Georgia,serif`;
+    }
+    const titleLineH=titleSize*1.15;
+    wrapText(dc.career,S/2,490,S-140,titleLineH,2);
+
+    // Tagline — italic, muted gold, wrapped
+    ctx.fillStyle="#A07850";
+    ctx.font=`italic 34px Georgia,serif`;
+    // Measure how far down the title went (approximate)
+    const titleLines=dc.career.split(" ").reduce((acc,w)=>{
+      return ctx.measureText(acc.last+" "+w).width>S-140
+        ?{count:acc.count+1,last:w}
+        :{count:acc.count,last:acc.last+" "+w};
+    },{count:1,last:""}).count;
+    const taglineY=490+(titleLines*titleLineH)+54;
+    wrapText(`"${dc.tagline}"`,S/2,taglineY,S-180,48,3);
+
+    // Bottom branding strip
+    ctx.fillStyle="rgba(0,0,0,0.35)";
+    ctx.fillRect(0,S-120,S,120);
+
+    ctx.fillStyle="#C8956A";
+    ctx.font="bold 22px Georgia,serif";
+    ctx.letterSpacing="3px";
+    ctx.textAlign="center";
+    ctx.fillText("MELBOURNE COFFEE × CYBER CAREER QUIZ",S/2,S-68);
+    ctx.letterSpacing="0px";
+
+    ctx.fillStyle="#7A5030";
+    ctx.font="italic 20px Georgia,serif";
+    ctx.fillText("Pour Decisions  ·  kimpanti.github.io/pourdecisions",S/2,S-34);
+
+    // Download
+    const link=document.createElement("a");
+    link.download=`pour-decisions-${dc.career.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"")}.png`;
+    link.href=cv.toDataURL("image/png");
+    link.click();
   }
 
   const li=items=>items.map((o,i)=><div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",marginBottom:6}}><span style={{color:C.accent,flexShrink:0,fontFamily:F,fontSize:13,lineHeight:"1.75"}}>—</span><Bd>{o}</Bd></div>);
@@ -229,9 +332,9 @@ function ResultScreen({answers,onRestart}){
               </div>
               {reaction&&<div style={{textAlign:"center",marginTop:12,fontSize:13,color:C.muted,fontStyle:"italic",fontFamily:F}}>{reaction==="yes"?"Your coffee order knows you better than you thought. Share it.":"Try again with a different order — there are over 30 careers in here."}</div>}
             </div>
-            <button onClick={handleCopy} style={{width:"100%",padding:"12px",border:`1px solid ${copied?"#166534":C.accent}`,borderRadius:8,background:copied?"#DCFCE7":C.pale,color:copied?"#166534":C.accent,fontSize:14,fontFamily:F,marginBottom:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
-              {copied?<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>}
-              {copied?"Link copied — paste it anywhere":"Copy link to share ↗"}
+            <button onClick={generateShareImage} style={{width:"100%",padding:"12px",border:`1px solid ${copied?"#166534":C.accent}`,borderRadius:8,background:copied?"#DCFCE7":C.pale,color:copied?"#166534":C.accent,fontSize:14,fontFamily:F,marginBottom:12,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+              {copied?<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>:<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>}
+              {copied?"Saving your image…":"Download result as image ↓"}
             </button>
             <div style={{background:"#FBF6F0",border:`1px solid ${C.border}`,borderRadius:8,padding:"12px 14px"}}>
               <Bd style={{fontSize:12,color:C.muted,fontStyle:"italic"}}>This quiz is for fun only — not career advice. Cyber career paths are varied and no single coffee order defines your future. Qualifications listed are general guidance based on common Australian industry pathways — always verify current requirements with employers and registered training organisations.</Bd>
