@@ -205,10 +205,10 @@ function ResultScreen({answers,onRestart}){
       ctx.fillRect(x,y,1.5,1.5);
     }
 
-    // Thin gold border inset
+    // Thin gold border inset — stops above the footer strip (120px from bottom)
     ctx.strokeStyle="#C8956A";
     ctx.lineWidth=3;
-    ctx.strokeRect(40,40,S-80,S-80);
+    ctx.strokeRect(40,40,S-80,S-80-120);
 
     // Helper: wrap text, returns final y
     function wrapText(text,x,y,maxW,lineH,maxLines){
