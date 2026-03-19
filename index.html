@@ -29,33 +29,71 @@ button{cursor:pointer;transition:all 0.18s;-webkit-tap-highlight-color:transpare
   text-transform:uppercase;backdrop-filter:blur(4px);cursor:pointer;
 }
 .opt-btn:hover,.opt-btn.sel{background:#fff;color:#000;border-color:#fff}
-/* Receipt */
-.receipt{
-  background:#fff;color:#000;padding:48px 36px 60px;
-  font-family:'Courier Prime',monospace;position:relative;
-  box-shadow:0 32px 80px rgba(0,0,0,0.9);
-}
-.receipt::after{
-  content:"";position:absolute;bottom:-14px;left:0;width:100%;height:14px;
+/* Receipt — thermal paper feel */
+.receipt-wrap{position:relative;margin-bottom:8px}
+/* Perforated top edge */
+.receipt-wrap::before{
+  content:"";display:block;height:16px;
   background:
-    linear-gradient(-45deg,transparent 7px,#fff 7px),
-    linear-gradient( 45deg,transparent 7px,#fff 7px);
-  background-size:14px 14px;background-position:left bottom,left bottom;
+    radial-gradient(circle at 7px 100%, #000 7px, transparent 7px),
+    radial-gradient(circle at -1px 100%, transparent 7px, #000 7px);
+  background-size:14px 16px;background-position:0 0;
+  background-color:#000;
 }
-.r-head{text-align:center;border-bottom:1px dashed #000;padding-bottom:28px;margin-bottom:28px}
-.r-section{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed #ddd}
-.r-section:last-of-type{border-bottom:none}
-.r-label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2.5px;opacity:0.5;margin-bottom:10px}
-.r-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:5px}
-.r-row.total{font-weight:700;font-size:14px;border-top:1px solid #000;padding-top:8px;margin-top:4px}
-/* Share buttons */
-.share-bar{display:flex;gap:8px;margin-top:22px;padding-top:22px;border-top:1px solid #ddd}
+/* Perforated bottom tear */
+.receipt-wrap::after{
+  content:"";display:block;height:18px;
+  background:
+    radial-gradient(circle at 7px 0, #000 7px, transparent 7px),
+    radial-gradient(circle at -1px 0, transparent 7px, #000 7px);
+  background-size:14px 18px;background-position:0 0;
+  background-color:#000;
+}
+.receipt{
+  background:#FFFEF9;color:#000;padding:40px 34px 48px;
+  font-family:'Courier Prime',monospace;position:relative;
+  box-shadow:0 24px 60px rgba(0,0,0,0.85),inset 0 0 40px rgba(0,0,0,0.03);
+  /* Subtle thermal paper grain */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeBlend in='SourceGraphic' mode='multiply'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+}
+/* Horizontal stitch line near top — like roll paper */
+.receipt::before{
+  content:"";position:absolute;top:18px;left:0;right:0;height:1px;
+  background:repeating-linear-gradient(90deg,#ddd 0,#ddd 6px,transparent 6px,transparent 12px);
+  opacity:0.6;
+}
+.r-head{text-align:center;margin-bottom:24px;padding-bottom:20px;
+  border-bottom:1px dashed rgba(0,0,0,0.25)}
+.r-section{margin-bottom:20px;padding-bottom:16px;border-bottom:1px dashed rgba(0,0,0,0.15)}
+.r-section:last-of-type{border-bottom:none;margin-bottom:0}
+.r-label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;
+  letter-spacing:2.5px;color:rgba(0,0,0,0.4);margin-bottom:8px}
+.r-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;margin-bottom:4px}
+.r-row.total{font-weight:700;font-size:15px;border-top:1px solid #000;padding-top:8px;margin-top:6px}
+/* ★ Share section — outside the receipt, on the dark background */
+.share-section{margin-top:28px}
+.share-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:3px;
+  color:rgba(255,255,255,0.35);text-align:center;display:block;margin-bottom:14px}
+.share-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.share-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+/* Primary share button — Instagram */
+.s-btn-primary{
+  width:100%;padding:18px 12px;font-size:11px;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;cursor:pointer;
+  border:none;background:#fff;color:#000;
+  font-family:'Inter',sans-serif;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.s-btn-primary:hover{background:#f0f0f0}
+/* Secondary share buttons */
 .s-btn{
-  flex:1;padding:13px 4px;font-size:9px;font-weight:700;text-transform:uppercase;
-  letter-spacing:1.5px;cursor:pointer;border:1px solid #000;background:transparent;
-  color:#000;font-family:'Courier Prime',monospace;text-align:center;
+  width:100%;padding:14px 8px;font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1.5px;cursor:pointer;border:1px solid rgba(255,255,255,0.25);
+  background:transparent;color:rgba(255,255,255,0.7);
+  font-family:'Inter',sans-serif;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:6px;
 }
-.s-btn:hover{background:#000;color:#fff}
+.s-btn:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,0.06)}
 /* Progress bar */
 .prog-bar{height:2px;background:rgba(255,255,255,0.12);margin-bottom:28px;position:relative}
 .prog-fill{position:absolute;top:0;left:0;height:100%;background:rgba(255,255,255,0.7);transition:width 0.35s ease}
@@ -98,17 +136,17 @@ const CAREERS = {
 
 "vuln-researcher":{career:"Vulnerability Researcher",tagline:"You find what others declare impossible to find.",desc:"Vulnerability research sits at the edge of what is known — studying software and systems for flaws that have never been documented. You have a high tolerance for ambiguity and a very specific kind of satisfaction that comes only from finding something real that nobody else found. In Australia this capability is almost entirely concentrated in ASD and a handful of specialist firms.",demand:"High",demandNote:"Vulnerability research is one of the most globally scarce and domestically concentrated specialisms. In Australia, the primary employers are ASD and defence contractors with NV1/NV2 clearance requirements. Commercial roles exist at specialist firms like Pure Security and CyberCX. CVE publications and active bug bounty programmes are the most valued credentials. Salaries range from $130,000–$200,000+ depending on clearance level.",orgs:["Australian Signals Directorate (ASD)","Defence contractors — Leidos, BAE Systems, Thales Australia","Specialist security research firms","Technology vendors with dedicated security research teams"],quals:["Degree in computer science or software engineering","CVE publication history is the most important credential","Reverse engineering skills — IDA Pro, Ghidra, Binary Ninja","Active bug bounty participation — HackerOne, Bugcrowd"]},
 
-"appsec-engineer":{career:"AppSec Engineer",tagline:"You review the code before anyone ships it. Usually.",desc:"Application Security Engineers embed security into the software development lifecycle — code review, SAST/DAST tooling, security testing frameworks, and developer training. You are the person dev teams both fear and genuinely appreciate. As Australian organisations accelerate software delivery, the gap between development pace and security assurance is widening rapidly.",demand:"Very high",demandNote:"AppSec is one of the most critically undersupplied disciplines in Australian cybersecurity. Seek and Indeed consistently show strong demand from fintech, SaaS, and government digital transformation programmes. Salaries typically range from $120,000–$170,000. Practitioners who can operate fluently in both engineering and security cultures command a significant premium over generalist security engineers.",orgs:["Fintech and SaaS companies — Afterpay, Canva, Atlassian","Financial services with large engineering teams — ANZ, CommBank, NAB","Government digital agencies — DTA, Services Australia","Big 4 consulting firms with development security practices"],quals:["Degree in computer science or software engineering","GWEB — GIAC Web Application Defender","Certified Application Security Engineer (CASE)","Hands-on SAST/DAST tooling — Checkmarx, Veracode, SonarQube"]},
+"appsec-engineer":{career:"Application Security Engineer",tagline:"You review the code before anyone ships it. Usually.",desc:"Application Security Engineers embed security into the software development lifecycle — code review, SAST/DAST tooling, security testing frameworks, and developer training. You are the person dev teams both fear and genuinely appreciate. As Australian organisations accelerate software delivery, the gap between development pace and security assurance is widening rapidly.",demand:"Very high",demandNote:"AppSec is one of the most critically undersupplied disciplines in Australian cybersecurity. Seek and Indeed consistently show strong demand from fintech, SaaS, and government digital transformation programmes. Salaries typically range from $120,000–$170,000. Practitioners who can operate fluently in both engineering and security cultures command a significant premium over generalist security engineers.",orgs:["Fintech and SaaS companies — Afterpay, Canva, Atlassian","Financial services with large engineering teams — ANZ, CommBank, NAB","Government digital agencies — DTA, Services Australia","Big 4 consulting firms with development security practices"],quals:["Degree in computer science or software engineering","GWEB — GIAC Web Application Defender","Certified Application Security Engineer (CASE)","Hands-on SAST/DAST tooling — Checkmarx, Veracode, SonarQube"]},
 
-"sec-engineer":{career:"Security Engineer",tagline:"The reliable backbone. Everything runs better because you exist.",desc:"Classic, precise, technically demanding to execute well. You build and maintain the controls that everyone else relies on — not flashy, not seeking recognition, and the first person called when something breaks at 2am during a Collingwood finals game. The ACS projects demand for this role growing at 14.2% through 2029, more than double the national average.",demand:"Very high",demandNote:"Security engineering consistently sits in the top five most-advertised cyber roles on Seek Australia, with cloud security engineering the most undersupplied variant. Salaries range from $110,000–$165,000, with cloud-focused engineers commanding the upper end. Demand is durable — it follows technology adoption curves and is not easily automated or outsourced.",orgs:["Technology companies and scale-ups","Financial services and fintech","Managed security service providers — Tesserent, CyberCX, Unison","Federal and state government digital transformation programmes"],quals:["Degree in computer science, software engineering, or information systems","AWS Security Specialty or equivalent cloud certification — Azure Security Engineer, GCP Professional Cloud Security","GIAC GSEC for foundational credentialling","Hands-on DevSecOps pipeline and infrastructure-as-code experience"]},
+"sec-engineer":{career:"Cyber Security Engineer",tagline:"The reliable backbone. Everything runs better because you exist.",desc:"Classic, precise, technically demanding to execute well. You build and maintain the controls that everyone else relies on — not flashy, not seeking recognition, and the first person called when something breaks at 2am during a Collingwood finals game. The ACS projects demand for this role growing at 14.2% through 2029, more than double the national average.",demand:"Very high",demandNote:"Security engineering consistently sits in the top five most-advertised cyber roles on Seek Australia, with cloud security engineering the most undersupplied variant. Salaries range from $110,000–$165,000, with cloud-focused engineers commanding the upper end. Demand is durable — it follows technology adoption curves and is not easily automated or outsourced.",orgs:["Technology companies and scale-ups","Financial services and fintech","Managed security service providers — Tesserent, CyberCX, Unison","Federal and state government digital transformation programmes"],quals:["Degree in computer science, software engineering, or information systems","AWS Security Specialty or equivalent cloud certification — Azure Security Engineer, GCP Professional Cloud Security","GIAC GSEC for foundational credentialling","Hands-on DevSecOps pipeline and infrastructure-as-code experience"]},
 
 "cloud-arch":{career:"Cloud Security Architect",tagline:"Early adopter. Engineered under pressure. Ahead before anyone noticed.",desc:"You were designing zero-trust cloud architectures when most organisations were still debating whether to move to the cloud. Australia's whole-of-government cloud migration programme and the major banks' multi-cloud modernisation have created structural demand for this role that the market simply cannot fill.",demand:"Very high",demandNote:"Cloud security architecture is the single most critically undersupplied specialism in Australian cybersecurity. Hays Salary Guide 2024/25 places senior cloud security architects at $180,000–$250,000, with CCSP and AWS Security Specialty holders commanding above-market premiums. Government cloud programmes — particularly ASD-certified cloud — drive significant demand from Canberra.",orgs:["Hyperscaler partners — AWS, Microsoft, Google Australia","Financial services mid-cloud-migration — Big 4 banks, Macquarie","Government agencies in whole-of-government cloud programmes","Technology companies and scale-ups building cloud-native products"],quals:["Degree in computer science, software engineering, or information systems","AWS Security Specialty — the most recognised credential in this space","CCSP — Certified Cloud Security Professional","SABSA or TOGAF background increasingly expected for senior architecture roles"]},
 
-"sec-architect":{career:"Security Architect",tagline:"You design systems that hold. The details are where you live.",desc:"Security Architects design the security posture of entire organisations — not individual tools, but the integrated frameworks, controls, and principles that hold when the attacker actually arrives. In Australia this role sits above the security engineer and below the CISO, often operating as the technical authority on major transformation programmes.",demand:"High",demandNote:"Security architecture is a well-compensated senior specialism with consistent demand across Australian enterprise, particularly as SOCI Act obligations and cloud migrations drive major infrastructure change programmes. Salaries range from $160,000–$220,000. Practitioners who can translate technical architecture into board-readable risk language are genuinely rare in the market.",orgs:["Large enterprises across financial services, healthcare, and government","Big 4 consulting firms — Deloitte, PwC, KPMG, EY","Defence agencies and system integrators","Technology companies building security-sensitive platforms"],quals:["Degree in computer science, engineering, or information systems","SABSA Chartered Security Architect — the most recognised architecture credential","CISSP with architecture concentration","10+ years progressive security experience, with enterprise architecture background preferred"]},
+"sec-architect":{career:"Cyber Security Architect",tagline:"You design systems that hold. The details are where you live.",desc:"Security Architects design the security posture of entire organisations — not individual tools, but the integrated frameworks, controls, and principles that hold when the attacker actually arrives. In Australia this role sits above the security engineer and below the CISO, often operating as the technical authority on major transformation programmes.",demand:"High",demandNote:"Security architecture is a well-compensated senior specialism with consistent demand across Australian enterprise, particularly as SOCI Act obligations and cloud migrations drive major infrastructure change programmes. Salaries range from $160,000–$220,000. Practitioners who can translate technical architecture into board-readable risk language are genuinely rare in the market.",orgs:["Large enterprises across financial services, healthcare, and government","Big 4 consulting firms — Deloitte, PwC, KPMG, EY","Defence agencies and system integrators","Technology companies building security-sensitive platforms"],quals:["Degree in computer science, engineering, or information systems","SABSA Chartered Security Architect — the most recognised architecture credential","CISSP with architecture concentration","10+ years progressive security experience, with enterprise architecture background preferred"]},
 
 "devsecops":{career:"DevSecOps Engineer",tagline:"Security is not a gate. You build it into the pipeline from the start.",desc:"DevSecOps Engineers integrate security into the software development and deployment lifecycle rather than applying it at the end. You write the security tests that run in the CI/CD pipeline, build infrastructure-as-code that provisions securely by default, and make security feel like a feature rather than a friction point. Australian government digital transformation programmes are a major driver of demand.",demand:"Very high",demandNote:"DevSecOps is one of the most in-demand technical roles on Seek Australia, with demand particularly strong in government digital programmes and fintech. The DTA's Digital Government Strategy has created significant pipeline for practitioners who can operate fluently across security and engineering. Salaries range from $120,000–$170,000, with senior practitioners at scale-ups earning above $180,000.",orgs:["Technology companies and scale-ups — Canva, Atlassian, Xero","Financial services modernising their technology stack","Government digital agencies — DTA, ATO, Services Australia","Software vendors with security-sensitive products"],quals:["Degree in computer science or software engineering","AWS DevOps Engineer or equivalent cloud certification","GIAC GWEB — Web Application Defender","Hands-on CI/CD tooling — GitHub Actions, GitLab CI, Jenkins, Terraform"]},
 
-"secops-manager":{career:"Security Operations Manager",tagline:"Always running. Never switched off. Patient by design.",desc:"Cold brew brews for 12 to 24 hours — always on, producing something more durable than anything rushed. Security Operations Managers are exactly that: the operational backbone that coordinates the SOC, owns the incident response programme, and keeps everything running while the rest of Melbourne sleeps. ACSC recorded over 87,400 reported cyber incidents in 2024 — demand for this role is structural.",demand:"High",demandNote:"Security operations management is a stable, well-compensated function across all large Australian organisations. Managed security service providers are the largest employer segment, driven by mid-market organisations outsourcing their SOC capability. Salaries range from $130,000–$180,000. AI-assisted tooling is changing the shape of the work — managers who understand both the operational and strategic dimensions are particularly sought after.",orgs:["Managed security service providers — CyberCX, Tesserent, Trustwave","Financial services institutions — Big 4 banks, regional banks, insurers","Telecommunications and utilities — Telstra, APA Group, Sydney Water","Large government departments — Home Affairs, ATO, Defence"],quals:["Degree in IT, cybersecurity, or business","CISM — the standard management credential at this level","3–5 years SOC analyst or incident response experience before management","GIAC GSOM or equivalent operations management certification"]},
+"secops-manager":{career:"Cyber Security Operations Manager",tagline:"Always running. Never switched off. Patient by design.",desc:"Cold brew brews for 12 to 24 hours — always on, producing something more durable than anything rushed. Security Operations Managers are exactly that: the operational backbone that coordinates the SOC, owns the incident response programme, and keeps everything running while the rest of Melbourne sleeps. ACSC recorded over 87,400 reported cyber incidents in 2024 — demand for this role is structural.",demand:"High",demandNote:"Security operations management is a stable, well-compensated function across all large Australian organisations. Managed security service providers are the largest employer segment, driven by mid-market organisations outsourcing their SOC capability. Salaries range from $130,000–$180,000. AI-assisted tooling is changing the shape of the work — managers who understand both the operational and strategic dimensions are particularly sought after.",orgs:["Managed security service providers — CyberCX, Tesserent, Trustwave","Financial services institutions — Big 4 banks, regional banks, insurers","Telecommunications and utilities — Telstra, APA Group, Sydney Water","Large government departments — Home Affairs, ATO, Defence"],quals:["Degree in IT, cybersecurity, or business","CISM — the standard management credential at this level","3–5 years SOC analyst or incident response experience before management","GIAC GSOM or equivalent operations management certification"]},
 
 "soc-analyst":{career:"SOC Analyst",tagline:"Underappreciated, always on, and quietly indispensable.",desc:"Batch brew is always there — reliable, consistent, ready before you ask. Nobody photographs it for Instagram. But remove it from the café and everything slows down. You are monitoring alerts at 3am while the rest of Melbourne sleeps, triaging incidents before they become crises. This is the role most Australian cyber professionals start from — and the one most employers can never fill fast enough.",demand:"High",demandNote:"SOC Analyst is one of the highest-volume vacancy categories on Seek Australia. The ACSC's 2024 report recorded 87,400+ cyber incidents in Australia — demand for people who can triage and respond is structural. Entry salaries range from $70,000–$90,000 with mid-level analysts at $90,000–$120,000. AI-assisted tooling is shifting the premium toward analysts who handle complex investigation over routine triage.",orgs:["Managed security service providers — the most common entry point","Financial services SOC teams — Big 4 banks and insurers","Government and defence — ASD, DHA, state police","Large enterprises with internal security operations — Telstra, Qantas, health networks"],quals:["Degree in IT, cybersecurity, or computer science — or a strong self-study equivalent","CompTIA Security+ as a foundational entry credential","GIAC GSEC for progression","Operational discipline and shift tolerance matter as much as credentials at entry level"]},
 
@@ -126,7 +164,7 @@ const CAREERS = {
 
 "enterprise-risk":{career:"Enterprise Risk Manager",tagline:"You see the whole picture. Cyber is one chapter, not the whole story.",desc:"Enterprise Risk Managers sit above cyber risk and manage the full portfolio: operational, strategic, financial, reputational, and cyber risk in a unified framework. You understand that a ransomware attack is also a business continuity event, a reputational event, and a financial event — and you plan accordingly. APRA CPS 230 operational risk requirements have made this intersection of skills more commercially valuable than at any previous point.",demand:"High",demandNote:"Enterprise risk management with genuine cyber literacy is a growing and well-compensated niche in Australia. APRA CPS 230 — which came into effect in July 2025 — requires APRA-regulated entities to treat operational risk including cyber as an integrated discipline. Most ERM professionals lack technical depth; most cyber professionals lack enterprise risk breadth. Salaries range from $140,000–$200,000+.",orgs:["ASX-listed corporates — Group Risk and CRO functions","APRA-regulated financial services — banks, insurers, superannuation","Large government departments","Infrastructure and utilities companies under SOCI Act"],quals:["Degree in business, finance, law, or engineering","CRISC — Certified in Risk and Information Systems Control","CISM for cyber risk depth","Chartered membership of Risk Australia (previously RMIA) or equivalent professional body"]},
 
-"3p-risk":{career:"Third Party Risk Manager",tagline:"You trust but verify. Mostly you just verify.",desc:"Third Party Risk Managers assess and manage the security and compliance risks that enter an organisation through its vendors, suppliers, and partners. You are the person who reads the supplier contract clauses that nobody else reads and asks the questions that nobody else asks. High-profile supply chain incidents — including the Crowdstrike outage impacting Australian organisations — have made this role a board-level priority.",demand:"Very high",demandNote:"Third party and supply chain risk management is one of the fastest-growing functions in Australian GRC. APRA CPS 230 and SOCI Act supply chain security obligations, combined with high-profile incidents in 2023–2025, have driven this from a niche specialism to a standard enterprise function. Salaries range from $110,000–$160,000. Procurement and contract management backgrounds provide a practical advantage.",orgs:["Financial services institutions with large vendor ecosystems — Big 4 banks","Healthcare and pharmaceutical companies","Telecommunications and critical infrastructure operators under SOCI Act","Government agencies with complex supply chains — DTA, ATO, Home Affairs"],quals:["Degree in IT, business, law, or accounting","CISA or CRISC for risk and audit credentialling","ISO 27001 Lead Auditor for vendor assessment work","Procurement or contract management background highly valued — practical skills over credentials"]},
+"3p-risk":{career:"Third Party Cyber Risk Manager",tagline:"You trust but verify. Mostly you just verify.",desc:"Third Party Risk Managers assess and manage the security and compliance risks that enter an organisation through its vendors, suppliers, and partners. You are the person who reads the supplier contract clauses that nobody else reads and asks the questions that nobody else asks. High-profile supply chain incidents — including the Crowdstrike outage impacting Australian organisations — have made this role a board-level priority.",demand:"Very high",demandNote:"Third party and supply chain risk management is one of the fastest-growing functions in Australian GRC. APRA CPS 230 and SOCI Act supply chain security obligations, combined with high-profile incidents in 2023–2025, have driven this from a niche specialism to a standard enterprise function. Salaries range from $110,000–$160,000. Procurement and contract management backgrounds provide a practical advantage.",orgs:["Financial services institutions with large vendor ecosystems — Big 4 banks","Healthcare and pharmaceutical companies","Telecommunications and critical infrastructure operators under SOCI Act","Government agencies with complex supply chains — DTA, ATO, Home Affairs"],quals:["Degree in IT, business, law, or accounting","CISA or CRISC for risk and audit credentialling","ISO 27001 Lead Auditor for vendor assessment work","Procurement or contract management background highly valued — practical skills over credentials"]},
 
 "cyber-insurance":{career:"Cyber Insurance Analyst",tagline:"You price what others can't quantify.",desc:"Cyber Insurance Analysts sit at the intersection of actuarial science, risk management, and cybersecurity — quantifying cyber risk in financial terms for underwriting, broking, or claims. With 1,113 notifiable data breaches in Australia in 2024 and average breach costs exceeding $49,600 for small businesses, this is a market under significant pressure and in rapid growth.",demand:"Growing",demandNote:"Cyber insurance is one of the fastest-growing lines in the Australian insurance market. Marsh, Aon, and Willis Towers Watson are active hirers of practitioners who combine genuine cybersecurity literacy with insurance knowledge. The FAIR cyber risk quantification framework is increasingly expected. Salaries range from $100,000–$160,000, with senior underwriters and brokers earning well above that.",orgs:["Insurance companies with cyber underwriting portfolios — Chubb, Beazley, AIG Australia","Specialty risk brokers and advisors — Marsh, Aon, Willis Towers Watson","Reinsurance firms","Large consulting firms with actuarial and cyber practices — Deloitte, PwC"],quals:["Degree in actuarial science, finance, IT, or risk management","CRISC for cyber risk quantification methodology","CIP — Chartered Insurance Professional","FAIR model cyber risk quantification experience highly valued by underwriters"]},
 
@@ -138,7 +176,7 @@ const CAREERS = {
 
 "privacy-engineer":{career:"Privacy Engineer",tagline:"The same technical depth — with ethics built in from the start.",desc:"Privacy Engineers embed privacy into systems at the code and architecture layer: data minimisation by default, consent mechanisms that actually function, deletion pipelines that run automatically. You review the product brief before the first sprint starts. The Privacy Act 2024 requirement for 'technical and organisational measures' to protect personal data has made this role legally consequential, not just aspirational.",demand:"High",demandNote:"Privacy engineering is an emerging specialism in Australia, driven by Privacy Act 2024 requirements for technical privacy controls, the new statutory tort for serious privacy invasions, and regulatory pressure from the OAIC. The intersection of genuine software engineering skills with privacy law knowledge is rare. Salaries range from $120,000–$170,000. Technology companies and data-heavy financial services are the primary hirers.",orgs:["Technology companies — Atlassian, Canva, REA Group","Financial services and healthcare — data-heavy sectors","Government agencies modernising digital services — DTA, Services Australia","Consulting firms with privacy and technology practices"],quals:["Degree in computer science, software engineering, or information systems","CIPT — Certified Information Privacy Technologist","AWS Security Specialty or equivalent for technical credentialling","CIPP/A to complement the technical pathway with privacy law grounding"]},
 
-"sec-analyst":{career:"Security Analyst",tagline:"Approachable, well-rounded, and more capable than people assume.",desc:"The latte is the most ordered coffee in Australia and there is a reason — it is reliably good, broadly appealing, and works across every context. Security Analysts are the same: the essential generalist role that underpins every security function, capable of moving across domains, and the foundation from which most specialist careers are built. Jobs & Skills Australia projects 14.2% employment growth in this group through 2029.",demand:"Very high",demandNote:"Security Analyst is consistently one of the highest-volume vacancy categories on Seek Australia, alongside SOC Analyst and Security Engineer. The ACS Digital Pulse 2025 projects 54,000 additional cyber roles needed by 2030. Entry salaries start at $70,000–$90,000, rising quickly to $100,000–$130,000 at mid-level. The pathway into specialist roles — threat intelligence, cloud security, incident response — is well-trodden.",orgs:["Every major sector — finance, healthcare, government, technology","Managed security service providers — the most common entry point","In-house security teams at mid-to-large enterprises","Government departments at all levels — APS cyber graduate programme"],quals:["Degree in IT, cybersecurity, or computer science — or a credible self-study pathway","CompTIA Security+ as a foundational entry credential","GIAC GSEC for progression","ASD Essential Eight Assessor certification increasingly valued in government and enterprise"]},
+"sec-analyst":{career:"Cyber Security Analyst",tagline:"Approachable, well-rounded, and more capable than people assume.",desc:"The latte is the most ordered coffee in Australia and there is a reason — it is reliably good, broadly appealing, and works across every context. Security Analysts are the same: the essential generalist role that underpins every security function, capable of moving across domains, and the foundation from which most specialist careers are built. Jobs & Skills Australia projects 14.2% employment growth in this group through 2029.",demand:"Very high",demandNote:"Security Analyst is consistently one of the highest-volume vacancy categories on Seek Australia, alongside SOC Analyst and Security Engineer. The ACS Digital Pulse 2025 projects 54,000 additional cyber roles needed by 2030. Entry salaries start at $70,000–$90,000, rising quickly to $100,000–$130,000 at mid-level. The pathway into specialist roles — threat intelligence, cloud security, incident response — is well-trodden.",orgs:["Every major sector — finance, healthcare, government, technology","Managed security service providers — the most common entry point","In-house security teams at mid-to-large enterprises","Government departments at all levels — APS cyber graduate programme"],quals:["Degree in IT, cybersecurity, or computer science — or a credible self-study pathway","CompTIA Security+ as a foundational entry credential","GIAC GSEC for progression","ASD Essential Eight Assessor certification increasingly valued in government and enterprise"]},
 
 "ism":{career:"Information Security Manager",tagline:"Steady, considered, in it for the long run.",desc:"You looked at the whole menu and you chose tea. Not because you could not decide — because you thought about it properly and tea is what you actually wanted. Information Security Managers are the steady backbone of the profession — deeply reliable, broadly capable, with an institutional knowledge of risk that compounds over time. This is the most common senior security title in mid-sized Australian enterprises.",demand:"High",demandNote:"Information Security Manager is a stable, well-compensated role across Australian industry. It is the natural progression from senior technical roles into management and the most common title at director level in mid-sized enterprises. Salaries range from $130,000–$180,000. The role is evolving as organisations implement SOCI Act and Privacy Act obligations — practitioners who understand both frameworks are particularly sought after.",orgs:["Every major sector — the role exists wherever IT and risk intersect","Mid-sized enterprises across manufacturing, retail, and professional services","Financial services and healthcare at senior levels","Government departments across Commonwealth and state levels"],quals:["Degree in IT, business, or engineering","CISM — the most directly relevant credential in Australia for this role","ISO 27001 Lead Implementer for standards-based environments","ASD Essential Eight Assessor certification widely expected in government-adjacent roles"]},
 
@@ -150,7 +188,7 @@ const CAREERS = {
 
 "cyber-policy":{career:"Cyber Policy Analyst",tagline:"Operating at the intersection of technology and society.",desc:"You are not building systems or breaking them — you are shaping the rules that govern them. You understand technology well enough to know when a policy proposal is technically illiterate, and politics well enough to know when a technically perfect proposal will never survive the process. Australia's $1.67 billion Cyber Security Strategy 2030 and expanding regulatory landscape are creating a genuine profession from what was previously a series of individual roles.",demand:"Growing",demandNote:"Cyber policy is a growing function in both government and industry in Australia. The Cyber Security Act 2024, SOCI Act amendments, Privacy Act reforms, and the AI Safety Institute' work are generating sustained demand for practitioners who can bridge technical and regulatory worlds. Canberra is the primary location for government roles. Salaries range from $90,000–$150,000 in the APS, higher in the private sector.",orgs:["ASD and ACSC — Cyber Security Strategy implementation roles","Department of Home Affairs — Cyber and Critical Technology policy","State government cybersecurity agencies","Industry peak bodies — AISA, AICD, Financial Services Council"],quals:["Degree in law, public policy, political science, or international relations","CIPP/G — Certified Information Privacy Professional / Government","Graduate research background — Honours, Masters, or PhD — common in this field","ASD Essential Eight knowledge increasingly expected even in policy roles"]},
 
-"sec-policy-writer":{career:"Security Policy Writer",tagline:"You give complex ideas their clearest, most useful form.",desc:"Security Policy Writers produce the policies, standards, procedures, and guidelines that govern how an organisation manages its security. Precise, thorough, independent in their judgement. The SOCI Act's CIRMP requirements and the Privacy Act's expanded compliance obligations have created significant demand for practitioners who can translate regulatory requirements into workable internal frameworks.",demand:"Growing",demandNote:"Security policy and technical writing is a growing specialism as Australian organisations formalise their security programmes ahead of SOCI Act annual reporting and Privacy Act compliance deadlines. The role is often contracted or freelance, with daily rates of $700–$1,100 common for experienced practitioners. In-house roles range from $95,000–$145,000. A strong portfolio is the primary credential — everything else supports it.",orgs:["Specialist GRC consultancies — Protiviti, Gallagher Bassett, Deloitte Risk Advisory","Government agencies building security frameworks — ASD, Home Affairs, ATO","Large enterprises formalising programmes ahead of SOCI Act compliance","Independent contractors across most major sectors"],quals:["Degree in communications, IT, law, or English","CISM or CISA for governance context and credibility","ISO 27001 Lead Implementer for ISMS framework knowledge","A strong technical writing portfolio is the most important credential in this market"]},
+"sec-policy-writer":{career:"Cyber Security Policy Writer",tagline:"You give complex ideas their clearest, most useful form.",desc:"Security Policy Writers produce the policies, standards, procedures, and guidelines that govern how an organisation manages its security. Precise, thorough, independent in their judgement. The SOCI Act's CIRMP requirements and the Privacy Act's expanded compliance obligations have created significant demand for practitioners who can translate regulatory requirements into workable internal frameworks.",demand:"Growing",demandNote:"Security policy and technical writing is a growing specialism as Australian organisations formalise their security programmes ahead of SOCI Act annual reporting and Privacy Act compliance deadlines. The role is often contracted or freelance, with daily rates of $700–$1,100 common for experienced practitioners. In-house roles range from $95,000–$145,000. A strong portfolio is the primary credential — everything else supports it.",orgs:["Specialist GRC consultancies — Protiviti, Gallagher Bassett, Deloitte Risk Advisory","Government agencies building security frameworks — ASD, Home Affairs, ATO","Large enterprises formalising programmes ahead of SOCI Act compliance","Independent contractors across most major sectors"],quals:["Degree in communications, IT, law, or English","CISM or CISA for governance context and credibility","ISO 27001 Lead Implementer for ISMS framework knowledge","A strong technical writing portfolio is the most important credential in this market"]},
 
 "ot-specialist":{career:"OT/ICS Security Specialist",tagline:"You protect systems that, if they fail, the lights go out.",desc:"Operational Technology and Industrial Control System security specialists protect the systems that run power grids, water treatment plants, manufacturing lines, and critical infrastructure. The SOCI Act's Critical Infrastructure Risk Management Programme (CIRMP) obligations, which expanded to cover all 11 critical infrastructure sectors by April 2025, have made this one of the most urgently needed specialisms in Australia.",demand:"Rapidly growing",demandNote:"OT/ICS security is one of the most critically undersupplied specialisms in Australia. The SOCI Act CIRMP obligations now cover energy, water, transport, telecommunications, healthcare, and 6 other sectors — all requiring OT security capability. The intersection of IT security skills with OT/industrial knowledge is vanishingly rare. Salaries range from $130,000–$200,000. Engineering backgrounds in the relevant industrial sector provide a significant practical advantage.",orgs:["Energy and utilities companies — AGL, Origin, Sydney Water, Ausgrid","Water and wastewater operators — SA Water, City West Water","Manufacturing and resources companies","Government agencies — CISC (Critical Infrastructure Security Centre), Home Affairs"],quals:["Degree in engineering, IT, or industrial systems","GICSP — Global Industrial Cyber Security Professional — the field standard","IEC 62443 certification increasingly expected for senior roles","Engineering background in energy, water, or manufacturing provides a significant advantage"]},
 
@@ -162,13 +200,13 @@ const CAREERS = {
 
 "digital-trust":{career:"Digital Trust Consultant",tagline:"You are building the conditions for people to rely on systems they cannot see.",desc:"Digital Trust Consultants help organisations earn and maintain the trust of the people who use their systems: building the frameworks, running the assessments, and translating technical assurance into something meaningful to real people. The new statutory tort for serious invasions of privacy — effective June 2025 — has made 'trustworthy by design' a legal requirement, not just a marketing statement.",demand:"Rapidly growing",demandNote:"Digital trust as a distinct professional discipline is emerging rapidly in Australia. The Privacy Act 2024 statutory privacy tort, high-profile data breaches (Medibank, Optus, DP World), and increasing community expectations are driving organisations to invest in trust as a strategic asset. Salaries range from $110,000–$170,000. Consulting firms building digital trust practices are the primary hirers alongside large government digital services agencies.",orgs:["Technology companies seeking to build consumer trust — banking apps, health tech, govtech","Financial services institutions with large retail customer bases","Government digital services — myGov, ATO digital, Services Australia","Consulting firms building digital trust practices — KPMG, Deloitte, PwC"],quals:["Degree in law, IT, communications, or public policy","CIPP/A for privacy grounding — essential post-Privacy Act 2024 reforms","CIPT — Certified Information Privacy Technologist","ISO 27001 Lead Implementer or equivalent assurance framework experience"]},
 
-"sec-consultant":{career:"Security Consultant",tagline:"Polished, adaptable, equally at home in any environment.",desc:"The iced latte works in a board meeting, at a standing desk, and at a Fitzroy rooftop bar. Security consultants are the same: moving between clients, industries, and technical contexts without breaking stride, translating complexity for whoever is in the room, and leaving organisations measurably better than they found them — before getting on the tram to the next engagement.",demand:"Very high",demandNote:"Security consulting demand in Australia is consistently among the highest on Seek, driven by regulatory pressure — SOCI Act, Privacy Act, APRA CPS 234 — and executive awareness of cyber risk. CyberCX, Tesserent, Sekuro, and the Big 4 are all actively hiring. The mid-market segment — organisations too small for a full-time team but too large to do without — is the fastest-growing client base. Salaries range from $110,000–$180,000.",orgs:["Big 4 consulting firms — Deloitte Cyber, PwC Cyber, KPMG Cyber Risk, EY Cyber","Specialist cybersecurity consultancies — CyberCX, Tesserent, Sekuro, Trustwave","Mid-tier advisory firms — Protiviti, Mandiant (Google), Accenture Security","Technology vendors with professional services arms"],quals:["Degree in IT, business, law, or engineering","CISSP for senior consulting credibility — widely expected at manager level and above","CISM for management consulting pathways","Big 4 or specialist consulting experience accelerates progression significantly"]},
+"sec-consultant":{career:"Cyber Security Consultant",tagline:"Polished, adaptable, equally at home in any environment.",desc:"The iced latte works in a board meeting, at a standing desk, and at a Fitzroy rooftop bar. Security consultants are the same: moving between clients, industries, and technical contexts without breaking stride, translating complexity for whoever is in the room, and leaving organisations measurably better than they found them — before getting on the tram to the next engagement.",demand:"Very high",demandNote:"Security consulting demand in Australia is consistently among the highest on Seek, driven by regulatory pressure — SOCI Act, Privacy Act, APRA CPS 234 — and executive awareness of cyber risk. CyberCX, Tesserent, Sekuro, and the Big 4 are all actively hiring. The mid-market segment — organisations too small for a full-time team but too large to do without — is the fastest-growing client base. Salaries range from $110,000–$180,000.",orgs:["Big 4 consulting firms — Deloitte Cyber, PwC Cyber, KPMG Cyber Risk, EY Cyber","Specialist cybersecurity consultancies — CyberCX, Tesserent, Sekuro, Trustwave","Mid-tier advisory firms — Protiviti, Mandiant (Google), Accenture Security","Technology vendors with professional services arms"],quals:["Degree in IT, business, law, or engineering","CISSP for senior consulting credibility — widely expected at manager level and above","CISM for management consulting pathways","Big 4 or specialist consulting experience accelerates progression significantly"]},
 
-"evangelist":{career:"Security Evangelist",tagline:"You make the complex genuinely appealing. The results speak for themselves.",desc:"Some purists look down on the frappuccino. Those people are missing the point — it gets more people engaged with coffee than any single-origin pour-over ever will. You make deeply technical concepts accessible, build the commercial case for security investment, and bring non-technical stakeholders along without making them feel patronised. In Australia's growing security vendor ecosystem, this skill is increasingly valued.",demand:"Growing",demandNote:"Security evangelism as a distinct function is growing as the Australian cyber security market matures and vendor competition intensifies. Cybersecurity vendors, consulting firms building their brand, and large enterprises investing in security culture are the primary hirers. Salaries range from $110,000–$180,000, with strong commission structures for commercially-oriented roles. Public speaking and written communication quality are the primary differentiators.",orgs:["Cybersecurity vendors with Australian operations — Palo Alto, CrowdStrike, Darktrace","Consulting firms in pre-sales and business development","AISA, ACS, and industry professional bodies — conference and event roles","Large enterprises building security culture programmes"],quals:["Degree in communications, business, IT, or marketing","CISSP or CompTIA Security+ for technical credibility — expected even in commercial roles","Sales engineering or product marketing background highly valued","Public speaking ability and published writing quality are the real qualifications here"]},
+"evangelist":{career:"Cyber Security Evangelist",tagline:"You make the complex genuinely appealing. The results speak for themselves.",desc:"Some purists look down on the frappuccino. Those people are missing the point — it gets more people engaged with coffee than any single-origin pour-over ever will. You make deeply technical concepts accessible, build the commercial case for security investment, and bring non-technical stakeholders along without making them feel patronised. In Australia's growing security vendor ecosystem, this skill is increasingly valued.",demand:"Growing",demandNote:"Security evangelism as a distinct function is growing as the Australian cyber security market matures and vendor competition intensifies. Cybersecurity vendors, consulting firms building their brand, and large enterprises investing in security culture are the primary hirers. Salaries range from $110,000–$180,000, with strong commission structures for commercially-oriented roles. Public speaking and written communication quality are the primary differentiators.",orgs:["Cybersecurity vendors with Australian operations — Palo Alto, CrowdStrike, Darktrace","Consulting firms in pre-sales and business development","AISA, ACS, and industry professional bodies — conference and event roles","Large enterprises building security culture programmes"],quals:["Degree in communications, business, IT, or marketing","CISSP or CompTIA Security+ for technical credibility — expected even in commercial roles","Sales engineering or product marketing background highly valued","Public speaking ability and published writing quality are the real qualifications here"]},
 
-"awareness-lead":{career:"Security Awareness Lead",tagline:"The human layer is the most important control you have.",desc:"Security awareness is about changing human behaviour — making people feel safe enough to report mistakes rather than hide them, curious rather than paralysed. You measure success in culture shift, not click rates on phishing simulations. With human error involved in a significant majority of Australian data breaches, this role is no longer a training compliance function — it is a risk mitigation priority.",demand:"Growing",demandNote:"Security awareness and culture as a distinct function is growing as Australian organisations recognise the limits of technical controls. The ACSC's reporting consistently shows social engineering and phishing as primary attack vectors. Organisations that have experienced public breaches — healthcare networks, financial services — are investing most heavily. Salaries range from $90,000–$140,000. Adult learning and behaviour design skills are increasingly valued above traditional training delivery.",orgs:["Large enterprises across financial services, healthcare, and government","Financial services — banks and insurers with large retail workforces","Healthcare organisations — hospitals, health networks, aged care","Government departments — APS security culture programmes"],quals:["Degree in communications, psychology, education, or IT","SSAP — SANS Security Awareness and Training Professional","CompTIA Security+ for technical grounding and credibility with security teams","Adult learning, instructional design, or behavioural science qualifications increasingly valued"]},
+"awareness-lead":{career:"Cyber Security Awareness Lead",tagline:"The human layer is the most important control you have.",desc:"Security awareness is about changing human behaviour — making people feel safe enough to report mistakes rather than hide them, curious rather than paralysed. You measure success in culture shift, not click rates on phishing simulations. With human error involved in a significant majority of Australian data breaches, this role is no longer a training compliance function — it is a risk mitigation priority.",demand:"Growing",demandNote:"Security awareness and culture as a distinct function is growing as Australian organisations recognise the limits of technical controls. The ACSC's reporting consistently shows social engineering and phishing as primary attack vectors. Organisations that have experienced public breaches — healthcare networks, financial services — are investing most heavily. Salaries range from $90,000–$140,000. Adult learning and behaviour design skills are increasingly valued above traditional training delivery.",orgs:["Large enterprises across financial services, healthcare, and government","Financial services — banks and insurers with large retail workforces","Healthcare organisations — hospitals, health networks, aged care","Government departments — APS security culture programmes"],quals:["Degree in communications, psychology, education, or IT","SSAP — SANS Security Awareness and Training Professional","CompTIA Security+ for technical grounding and credibility with security teams","Adult learning, instructional design, or behavioural science qualifications increasingly valued"]},
 
-"sec-trainer":{career:"Security Trainer & Educator",tagline:"You are here for the people, not the product.",desc:"You looked at the whole menu and ordered nothing — because you are not here for what is in the cup. You are here for the people sitting across the table. Security Trainers and Educators build the human foundation that all technical controls rest on. The ACS projects 54,000 additional cyber roles needed by 2030 — which means Australia needs far more educators than it currently has.",demand:"Growing",demandNote:"Security training and education is a growing function as Australia's critical skills shortage drives investment in domestic capability. TAFE institutions, RTOs, and universities are all expanding cyber security offerings. Corporate security training programmes have grown significantly following high-profile breaches. The APS Cyber Graduate Programme and the ASD's Australian Cyber Security Centre training initiatives are additional demand sources. Salaries range from $85,000–$130,000.",orgs:["TAFE institutions — TAFE NSW, TAFE Queensland, RMIT TAFE Victoria","Universities with cyber security programmes — Deakin, UNSW, ANU, University of Melbourne","Registered Training Organisations with cyber security offerings","Corporate learning and development functions — large employers with internal training teams"],quals:["Degree in education, instructional design, IT, or communications","Certificate IV in Training and Assessment (TAE40122) — required for formal RTO delivery","CompTIA Security+ or equivalent for technical grounding and subject matter credibility","SSAP — SANS Security Awareness and Training Professional for programme design"]},
+"sec-trainer":{career:"Cyber Security Trainer & Educator",tagline:"You are here for the people, not the product.",desc:"You looked at the whole menu and ordered nothing — because you are not here for what is in the cup. You are here for the people sitting across the table. Security Trainers and Educators build the human foundation that all technical controls rest on. The ACS projects 54,000 additional cyber roles needed by 2030 — which means Australia needs far more educators than it currently has.",demand:"Growing",demandNote:"Security training and education is a growing function as Australia's critical skills shortage drives investment in domestic capability. TAFE institutions, RTOs, and universities are all expanding cyber security offerings. Corporate security training programmes have grown significantly following high-profile breaches. The APS Cyber Graduate Programme and the ASD's Australian Cyber Security Centre training initiatives are additional demand sources. Salaries range from $85,000–$130,000.",orgs:["TAFE institutions — TAFE NSW, TAFE Queensland, RMIT TAFE Victoria","Universities with cyber security programmes — Deakin, UNSW, ANU, University of Melbourne","Registered Training Organisations with cyber security offerings","Corporate learning and development functions — large employers with internal training teams"],quals:["Degree in education, instructional design, IT, or communications","Certificate IV in Training and Assessment (TAE40122) — required for formal RTO delivery","CompTIA Security+ or equivalent for technical grounding and subject matter credibility","SSAP — SANS Security Awareness and Training Professional for programme design"]},
 };
 
 // ─── CAREER RESOLUTION ───────────────────────────────────────────────────────
@@ -200,17 +238,23 @@ const FLAVOUR_MOD={
 
 const MILK_MODS={"full-cream":"You build for longevity inside organisations you genuinely believe in. Loyalty is a deliberate professional strategy, not a limitation.","oat":"Sustainability and ethics are woven into how you work — not an afterthought, the actual point of it.","almond":"Independent by instinct. You work best on your own terms, even within a larger structure.","soy":"You were doing this before it was mainstream. You have earned the right to be patient with everyone now catching up.","lactose-free":"You want the same outcome as everyone else but you have found your own path to get there. That adaptability is exactly what makes you effective.","none":"No additions. You have found your lane and you do not need to be anything other than excellent at it."};
 const FLAVOUR_MODS={"extra-shot":"You are already doing the work of the role above you. Everyone around you can see exactly where you are going.","vanilla":"Steady, reliable, broadly effective. People underestimate vanilla. That is entirely their problem.","caramel":"You make things more accessible than they would otherwise be — and the results consistently speak for themselves.","hazelnut":"Distinctive. You have found a specific niche and committed to it with full conviction.","cinnamon":"You add structure to everything you touch without it ever feeling like structure has been imposed.","none":"No additions needed. You know exactly who you are. The rarest and most honest answer."};
-const ORD_MODS={"counter":"Relationship-driven. You invest in people deliberately and it compounds over time in ways that cannot be replicated.","app":"Systems-first. You automate the repeatable so you can focus on the genuinely irreplaceable.","standing-order":"You have achieved the highest form of operational trust. Organisations are built on people like you."};
-const PAT_MODS={"same":"You have found what works and you optimise it rather than restart. Consistency is an underrated form of excellence.","mostly-same":"Disciplined with a controlled appetite for innovation. The most common profile among genuinely senior practitioners.","always-new":"Genuinely curious — or unable to commit. You are the only one who knows which. Both are worth sitting with.","ask-barista":"You trust expertise, delegate naturally, and build teams that people genuinely want to work in."};
+// ORD_MODS removed
+// PAT_MODS removed
 
-function resolveCareer(drink,milk,flavour){
-  if(drink==="no-coffee") return CAREERS["sec-trainer"];
-  const base=BASE[drink]||"sec-analyst";
-  const milkKey=milk&&milk!=="none"?milk:"none";
-  const midKey=MILK_MOD[milkKey]?.[base]||base;
-  const flavKey=flavour&&flavour!=="none"?flavour:"none";
-  const finalKey=FLAVOUR_MOD[flavKey]?.[midKey]||midKey;
-  return CAREERS[finalKey]||CAREERS[base]||CAREERS["sec-analyst"];
+function resolveCareer(drink,milk,flavour,ordering){
+  let career;
+  if(drink==="no-coffee"){
+    career=CAREERS["sec-trainer"];
+  } else {
+    const base=BASE[drink]||"sec-analyst";
+    const milkKey=milk&&milk!=="none"?milk:"none";
+    const midKey=MILK_MOD[milkKey]?.[base]||base;
+    const flavKey=flavour&&flavour!=="none"?flavour:"none";
+    const finalKey=FLAVOUR_MOD[flavKey]?.[midKey]||midKey;
+    career=CAREERS[finalKey]||CAREERS[base]||CAREERS["sec-analyst"];
+  }
+  // Build dynamic tagline from base + milk + flavour + ordering modifiers
+  return {...career, tagline: buildTagline(career.tagline, milk, flavour, ordering)};
 }
 function buildOrderLabel(drink,milk,flavour){
   const DL={"long-black":"Long Black","double-espresso":"Double Espresso","flat-white":"Flat White","latte":"Latte","cappuccino":"Cappuccino","pour-over":"Pour-Over","magic":"Magic","chai-latte":"Chai Latte","cold-brew":"Cold Brew","batch-brew":"Batch Brew","hot-choc":"Hot Chocolate","matcha":"Matcha Latte","tea":"Tea","iced-long-black":"Iced Long Black","iced-latte":"Iced Latte","iced-matcha":"Iced Matcha","iced-chai":"Iced Chai","nitro":"Nitro Cold Brew","frappuccino":"Frappuccino","dirty-chai":"Iced Dirty Chai","no-coffee":"No Coffee"};
@@ -222,15 +266,52 @@ function buildOrderLabel(drink,milk,flavour){
   return l;
 }
 
+
+// ─── DYNAMIC TAGLINE BUILDER ─────────────────────────────────────────────────
+// The base tagline is in each career. Milk and flavour add a one-phrase suffix.
+const TAGLINE_SUFFIX = {
+  milk: {
+    "full-cream": "Loyal by design. In it for the long game.",
+    "oat":        "Ethics first. Not an afterthought.",
+    "almond":     "Independent by instinct.",
+    "soy":        "You were early. You were right.",
+    "lactose-free":"Adapts without compromising.",
+    "none":       "No additions. No apologies.",
+  },
+  flavour: {
+    "extra-shot": "Already doing the job above.",
+    "vanilla":    "Makes complexity feel easy.",
+    "caramel":    "Brings people with them.",
+    "hazelnut":   "Found the niche. Owns it.",
+    "cinnamon":   "Adds structure to everything.",
+    "none":       "",
+  },
+  ordering: {
+    "counter":        "Relationship-driven. Compounds over time.",
+    "app":            "Systems-first. Automates the repeatable.",
+    "standing-order": "Institutional trust. Irreplaceable.",
+    "":               "",
+  }
+};
+function buildTagline(baseTagline, milk, flavour, ordering) {
+  const parts = [baseTagline];
+  const ms = milk && milk !== "none" ? TAGLINE_SUFFIX.milk[milk] : null;
+  const fs = flavour && flavour !== "none" ? TAGLINE_SUFFIX.flavour[flavour] : null;
+  const os = ordering ? (TAGLINE_SUFFIX.ordering[ordering] || "") : "";
+  if (ms) parts.push(ms);
+  if (fs && fs !== "") parts.push(fs);
+  if (os) parts.push(os);
+  return parts.join(" ");
+}
+
 // ─── QUIZ DATA ────────────────────────────────────────────────────────────────
 const HOT=[{val:"long-black",label:"Long Black"},{val:"double-espresso",label:"Double Espresso"},{val:"flat-white",label:"Flat White"},{val:"latte",label:"Latte"},{val:"cappuccino",label:"Cappuccino"},{val:"pour-over",label:"Pour-Over Single Origin"},{val:"magic",label:"Magic"},{val:"chai-latte",label:"Chai Latte"},{val:"cold-brew",label:"Cold Brew"},{val:"batch-brew",label:"Batch Brew / Filter"},{val:"hot-choc",label:"Hot Chocolate"},{val:"matcha",label:"Matcha Latte"},{val:"tea",label:"Tea"}];
 const ICED=[{val:"iced-long-black",label:"Iced Long Black / Cold Drip"},{val:"iced-latte",label:"Iced Latte"},{val:"iced-matcha",label:"Iced Matcha Latte"},{val:"iced-chai",label:"Iced Chai"},{val:"nitro",label:"Nitro Cold Brew"},{val:"frappuccino",label:"Frappuccino / Blended"},{val:"dirty-chai",label:"Iced Dirty Chai"}];
 const MILK_OPTS=[{val:"full-cream",label:"Full Cream"},{val:"oat",label:"Oat Milk"},{val:"almond",label:"Almond Milk"},{val:"soy",label:"Soy Milk"},{val:"lactose-free",label:"Lactose-Free"},{val:"none",label:"None / Black"}];
 const FLAVOUR_OPTS=[{val:"extra-shot",label:"Extra Shot"},{val:"vanilla",label:"Vanilla Syrup"},{val:"caramel",label:"Caramel Syrup"},{val:"hazelnut",label:"Hazelnut Syrup"},{val:"cinnamon",label:"Cinnamon"},{val:"none",label:"Nothing — Keep It Pure"}];
-const ORD_OPTS=[{val:"counter",label:"At the Counter — Face to Face"},{val:"app",label:"Via the App Before I Arrive"},{val:"standing-order",label:"They Start Mine When They See Me Walking Up"}];
-const PAT_OPTS=[{val:"same",label:"Same Thing Every Time"},{val:"mostly-same",label:"Mostly the Same, With Occasional Experiments"},{val:"always-new",label:"Always Something Different"},{val:"ask-barista",label:"I Ask the Barista What They Recommend"}];
+const ORD_OPTS=[{val:"counter",label:"At the counter — face to face"},{val:"app",label:"Via the app before I arrive"},{val:"standing-order",label:"They start mine when they see me walking up"}];
 
-const MID_STEPS=[{id:"milk",q:"Milk Choice",opts:MILK_OPTS,field:"milk"},{id:"flavour",q:"Add Syrup / Extra",opts:FLAVOUR_OPTS,field:"flavour"},{id:"ordering",q:"How Do You Order?",opts:ORD_OPTS,field:"ordering"},{id:"pattern",q:"Creature of Habit?",opts:PAT_OPTS,field:"pattern"}];
+const MID_STEPS=[{id:"milk",q:"Milk Choice",opts:MILK_OPTS,field:"milk"},{id:"flavour",q:"Add Syrup / Extra",opts:FLAVOUR_OPTS,field:"flavour"},{id:"ordering",q:"How do you order?",opts:ORD_OPTS,field:"ordering"}];
 const DRINK_STEP={id:"drink",q:"Base Order"};
 
 function getAllSteps(drink){
@@ -241,90 +322,148 @@ function readParams(){
   const p=new URLSearchParams(window.location.search);
   const drink=p.get("drink")||"";
   if(!drink) return null;
-  return{drink,milk:p.get("milk")||"none",flavour:p.get("flavour")||"none",ordering:p.get("ordering")||"",pattern:p.get("pattern")||""};
+  return{drink,milk:p.get("milk")||"none",flavour:p.get("flavour")||"none",ordering:p.get("ordering")||""};
 }
 
 // ─── CANVAS SHARE IMAGE ───────────────────────────────────────────────────────
-function generateShareImage(dc, orderLabel, price, ts) {
+function generateShareImage(dc, orderLabel, price) {
+  // 1080×1080 square — Instagram / LinkedIn ready
+  // Layout: black background, white receipt card, clean zones with no text collision
   const S=1080;
   const cv=document.createElement("canvas"); cv.width=S; cv.height=S;
   const ctx=cv.getContext("2d");
 
-  // White receipt on black
-  ctx.fillStyle="#000"; ctx.fillRect(0,0,S,S);
-  // Card
-  const PAD=64;
-  ctx.fillStyle="#fff"; ctx.fillRect(PAD,PAD,S-PAD*2,S-PAD*2);
-  // Zigzag bottom edge (receipt tear)
-  ctx.fillStyle="#000";
-  const zW=14; const zY=S-PAD;
-  for(let x=PAD;x<S-PAD;x+=zW){
-    ctx.beginPath();
-    ctx.moveTo(x,zY);
-    ctx.lineTo(x+zW/2,zY+14);
-    ctx.lineTo(x+zW,zY);
-    ctx.closePath();ctx.fill();
+  // ── Background ───────────────────────────────────────────────────────────────
+  ctx.fillStyle="#0a0a0a"; ctx.fillRect(0,0,S,S);
+
+  // ── Receipt card ─────────────────────────────────────────────────────────────
+  const CX=80; const CY=80; const CW=S-160; const CH=S-160;
+  ctx.fillStyle="#FFFEF9"; ctx.fillRect(CX,CY,CW,CH);
+
+  // ── Perforated top edge ───────────────────────────────────────────────────────
+  const holeR=8; const holeGap=24;
+  ctx.fillStyle="#0a0a0a";
+  for(let x=CX+holeGap;x<CX+CW-holeGap;x+=holeGap){
+    ctx.beginPath();ctx.arc(x,CY,holeR,0,Math.PI*2);ctx.fill();
+  }
+  // ── Perforated bottom edge ───────────────────────────────────────────────────
+  for(let x=CX+holeGap;x<CX+CW-holeGap;x+=holeGap){
+    ctx.beginPath();ctx.arc(x,CY+CH,holeR,0,Math.PI*2);ctx.fill();
   }
 
-  // Dashed header rule
-  ctx.strokeStyle="#000";ctx.lineWidth=1;ctx.setLineDash([4,4]);
-  ctx.beginPath();ctx.moveTo(PAD+32,PAD+180);ctx.lineTo(S-PAD-32,PAD+180);ctx.stroke();
+  // ── Inner content — fixed zones, no overlap ───────────────────────────────────
+  const L=CX+52; const R=CX+CW-52; const TW=CW-104;
+  let y=CY+52; // current y cursor
+
+  // Stitch line at top
+  ctx.strokeStyle="rgba(0,0,0,0.12)";ctx.lineWidth=1;
+  ctx.setLineDash([6,5]);
+  ctx.beginPath();ctx.moveTo(L,y+16);ctx.lineTo(R,y+16);ctx.stroke();
   ctx.setLineDash([]);
+  y+=42;
 
-  // Header text
-  ctx.fillStyle="#000";ctx.textAlign="center";
-  ctx.font="700 12px 'Courier New',monospace";ctx.letterSpacing="3px";
-  ctx.fillText("TAX INVOICE — MELBOURNE CBD",S/2,PAD+52);
+  // Header meta
+  ctx.fillStyle="rgba(0,0,0,0.35)";ctx.textAlign="center";
+  ctx.font="600 11px 'Courier New',monospace";ctx.letterSpacing="3px";
+  ctx.fillText("POUR DECISIONS  ·  TAX INVOICE",S/2,y);
+  y+=22;
   ctx.font="400 10px 'Courier New',monospace";ctx.letterSpacing="1px";
-  ctx.fillText(`ORDER #${Math.floor(Math.random()*8999)+1000} // ${ts}`,S/2,PAD+78);
-  ctx.font="900 68px Georgia,serif";ctx.letterSpacing="-1px";
-  ctx.fillText(dc.career.toUpperCase(),S/2,PAD+152);
-  ctx.font="italic 400 20px Georgia,serif";ctx.letterSpacing="0px";
-  ctx.fillStyle="rgba(0,0,0,0.55)";
-  ctx.fillText(`"${dc.tagline}"`,S/2,PAD+168);
+  ctx.fillText("MELBOURNE, VIC  ·  AUSTRALIA",S/2,y);
+  y+=36;
 
-  // Section: Order
-  ctx.textAlign="left";ctx.fillStyle="rgba(0,0,0,0.4)";
-  ctx.font="700 9px 'Courier New',monospace";ctx.letterSpacing="2px";
-  ctx.fillText("ORDER SUMMARY",PAD+32,PAD+216);
-  ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(PAD+32,PAD+228);ctx.lineTo(S-PAD-32,PAD+228);ctx.stroke();ctx.setLineDash([]);
+  // Dashed rule
+  ctx.strokeStyle="rgba(0,0,0,0.2)";ctx.setLineDash([5,5]);
+  ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(R,y);ctx.stroke();
+  ctx.setLineDash([]);
+  y+=48;
 
+  // Career title — auto-size to fit width
+  ctx.fillStyle="#000";ctx.textAlign="center";ctx.letterSpacing="-0.5px";
+  let titleSize=72;
+  ctx.font=`900 ${titleSize}px Georgia,serif`;
+  while(ctx.measureText(dc.career.toUpperCase()).width>TW && titleSize>38){
+    titleSize-=2;
+    ctx.font=`900 ${titleSize}px Georgia,serif`;
+  }
+  // If still doesn't fit, wrap to two lines
+  const titleWords=dc.career.toUpperCase().split(" ");
+  if(ctx.measureText(dc.career.toUpperCase()).width>TW){
+    let line1="",line2="";
+    for(let i=0;i<titleWords.length;i++){
+      const test=(line1?line1+" ":"")+titleWords[i];
+      if(ctx.measureText(test).width>TW*0.92 && line1){line2=titleWords.slice(i).join(" ");break;}
+      else line1=test;
+    }
+    ctx.fillText(line1,S/2,y);
+    if(line2){y+=titleSize*1.1;ctx.fillText(line2,S/2,y);}
+  } else {
+    ctx.fillText(dc.career.toUpperCase(),S/2,y);
+  }
+  y+=titleSize*0.5+24;
+
+  // Tagline — only the base tagline (first sentence) to keep it punchy
+  const baseTagline=dc.tagline.split(".")[0]+".";
+  ctx.fillStyle="rgba(0,0,0,0.5)";
+  let tSize=22;
+  ctx.font=`italic 400 ${tSize}px Georgia,serif`;ctx.letterSpacing="0px";
+  while(ctx.measureText(`"${baseTagline}"`).width>TW*0.95 && tSize>14){
+    tSize-=1;ctx.font=`italic 400 ${tSize}px Georgia,serif`;
+  }
+  ctx.fillText(`"${baseTagline}"`,S/2,y);
+  y+=48;
+
+  // Dashed rule
+  ctx.strokeStyle="rgba(0,0,0,0.15)";ctx.setLineDash([5,5]);
+  ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(R,y);ctx.stroke();
+  ctx.setLineDash([]);
+  y+=32;
+
+  // Order line
+  ctx.fillStyle="rgba(0,0,0,0.4)";ctx.font="600 10px 'Courier New',monospace";
+  ctx.letterSpacing="2px";ctx.textAlign="left";
+  ctx.fillText("ORDER",L,y);
+  ctx.textAlign="right";ctx.fillText("PRICE",R,y);
+  y+=18;
   ctx.fillStyle="#000";ctx.font="400 14px 'Courier New',monospace";ctx.letterSpacing="0";
-  function row(label,val,y){
-    ctx.textAlign="left";ctx.fillText(label,PAD+32,y);
-    ctx.textAlign="right";ctx.fillText(val,S-PAD-32,y);
+  // Truncate long order labels
+  let orderDisplay=orderLabel;
+  ctx.textAlign="left";
+  while(ctx.measureText("1x "+orderDisplay).width>TW-80 && orderDisplay.length>10){
+    orderDisplay=orderDisplay.slice(0,-4)+"…";
   }
-  row(`1x ${orderLabel}`,"$5.50",PAD+256);
-  // Price breakdown handled in label already — show total
-  ctx.textAlign="left";ctx.font="700 14px 'Courier New',monospace";
-  ctx.beginPath();ctx.moveTo(PAD+32,PAD+280);ctx.lineTo(S-PAD-32,PAD+280);ctx.strokeStyle="#000";ctx.lineWidth=1;ctx.stroke();
-  row("TOTAL DUE",price,PAD+304);
+  ctx.fillText("1x "+orderDisplay,L,y);
+  ctx.textAlign="right";ctx.fillText(price,R,y);
+  y+=16;
+  ctx.strokeStyle="#000";ctx.setLineDash([]);ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(R,y);ctx.stroke();
+  y+=18;
+  ctx.font="700 14px 'Courier New',monospace";
+  ctx.textAlign="left";ctx.fillText("TOTAL DUE",L,y);
+  ctx.textAlign="right";ctx.fillText(price,R,y);
+  y+=36;
 
-  // Section: Career
-  ctx.fillStyle="rgba(0,0,0,0.4)";ctx.font="700 9px 'Courier New',monospace";ctx.letterSpacing="2px";ctx.textAlign="left";
-  ctx.fillText("CYBER CAREER MAPPING",PAD+32,PAD+344);
-  ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(PAD+32,PAD+356);ctx.lineTo(S-PAD-32,PAD+356);ctx.stroke();ctx.setLineDash([]);
-
-  ctx.fillStyle="#000";ctx.font="400 13px 'Courier New',monospace";ctx.letterSpacing="0";
-  // Wrap description — 3 lines max
-  const words=dc.desc.split(" ");let line="";let y=PAD+384;let lcount=0;
-  for(let n=0;n<words.length;n++){
-    const t=line+words[n]+" ";
-    if(ctx.measureText(t).width>S-PAD*2-64&&n>0){
-      if(lcount>=3){ctx.fillText(line.trim()+"…",PAD+32,y);break;}
-      ctx.fillText(line.trim(),PAD+32,y);line=words[n]+" ";y+=22;lcount++;
-    }else line=t;
-    if(n===words.length-1)ctx.fillText(line.trim(),PAD+32,y);
-  }
+  // Dashed rule
+  ctx.strokeStyle="rgba(0,0,0,0.15)";ctx.setLineDash([5,5]);
+  ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(R,y);ctx.stroke();
+  ctx.setLineDash([]);
+  y+=32;
 
   // Market demand
-  ctx.font="700 11px 'Courier New',monospace";ctx.letterSpacing="1px";
-  ctx.fillText(`MARKET DEMAND: ${dc.demand.toUpperCase()}`,PAD+32,y+38);
+  ctx.fillStyle="rgba(0,0,0,0.4)";ctx.font="600 10px 'Courier New',monospace";
+  ctx.letterSpacing="2px";ctx.textAlign="center";
+  ctx.fillText("MARKET DEMAND",S/2,y);
+  y+=20;
+  ctx.fillStyle="#000";ctx.font="700 16px 'Courier New',monospace";ctx.letterSpacing="1px";
+  ctx.fillText(dc.demand.toUpperCase(),S/2,y);
+  y+=48;
 
-  // Footer
-  ctx.fillStyle="rgba(0,0,0,0.3)";ctx.font="700 9px 'Courier New',monospace";ctx.letterSpacing="2px";ctx.textAlign="center";
-  ctx.fillText("*".repeat(52),S/2,S-PAD-42);
-  ctx.fillText("kimpanti.github.io/pourdecisions",S/2,S-PAD-20);
+  // Footer URL
+  ctx.fillStyle="rgba(0,0,0,0.25)";ctx.font="600 10px 'Courier New',monospace";
+  ctx.letterSpacing="2px";ctx.textAlign="center";
+  // Asterisk row
+  ctx.fillText("* * * * * * * * * * * * * * * * * * * * * * * *",S/2,CY+CH-48);
+  ctx.letterSpacing="1.5px";
+  ctx.fillText("kimpanti.github.io/pourdecisions",S/2,CY+CH-24);
 
   const link=document.createElement("a");
   link.download=`pour-decisions-${dc.career.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"")}.png`;
@@ -354,7 +493,7 @@ function IntroScreen({onStart}){
 // ─── QUIZ SCREEN ──────────────────────────────────────────────────────────────
 function QuizScreen({step,stepIdx,totalSteps,currentVal,pct,onPick,onNext,onBack,drinkVal}){
   const CAFE_NEXT=["Add Milk →","Add Flavouring →","Next →","See My Order →","Pick Up Order ☕"];
-  const nxtLabel=totalSteps===1?"See My Result ☕":stepIdx===0?"Add Milk →":stepIdx===1?"Add Flavouring →":stepIdx===totalSteps-1?"Pick Up Order ☕":"Next →";
+  const nxtLabel=totalSteps===1?"See My Result ☕":stepIdx===0?"Add Milk →":stepIdx===1?"Add Syrup →":stepIdx===totalSteps-1?"Pick Up Order ☕":"Next →";
 
   return(
     <div className="container fu">
@@ -411,16 +550,13 @@ function ResultScreen({answers,onRestart}){
   const[reaction,setReaction]=useState(null);
   const[imgState,setImg]=useState("idle");
   const orderNum=useMemo(()=>Math.floor(Math.random()*8999)+1000,[]);
-  const dc=resolveCareer(answers.drink,answers.milk,answers.flavour);
+  const dc=resolveCareer(answers.drink,answers.milk,answers.flavour,answers.ordering);
   const orderLabel=buildOrderLabel(answers.drink,answers.milk,answers.flavour);
   const price=calcPrice(answers.milk,answers.flavour);
   const noCoffee=answers.drink==="no-coffee";
   const milkMod=!noCoffee&&answers.milk?(MILK_MODS[answers.milk]||""):"";
   const flavMod=!noCoffee&&answers.flavour?(FLAVOUR_MODS[answers.flavour]||""):"";
-  const ordMod=ORD_MODS[answers.ordering]||"";
-  const patMod=PAT_MODS[answers.pattern]||"";
   const whatSays=[milkMod,flavMod].filter(Boolean).join(" ");
-  const personality=[ordMod,patMod].filter(Boolean).join(" ");
   const ts=getTimestamp();
 
   function buildShareURL(){
@@ -429,7 +565,7 @@ function ResultScreen({answers,onRestart}){
   }
   function handleDownload(){
     setImg("saving");setTimeout(()=>setImg("idle"),3000);
-    generateShareImage(dc,orderLabel,price,ts);
+    generateShareImage(dc,orderLabel,price);
   }
   function shareLinkedIn(){window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(buildShareURL())}`,"_blank","noopener,noreferrer,width=600,height=500");}
   async function shareInstagram(){
@@ -440,15 +576,16 @@ function ResultScreen({answers,onRestart}){
 
   return(
     <div className="container fu">
-      {/* Receipt */}
-      <div className="receipt">
+      {/* Receipt with perforated edges */}
+      <div className="receipt-wrap">
+        <div className="receipt">
 
         {/* Receipt header */}
         <div className="r-head">
-          <p style={{fontSize:10,letterSpacing:"2px",textTransform:"uppercase"}}>Tax Invoice — Melbourne CBD</p>
-          <p style={{fontSize:9,letterSpacing:"1px",opacity:0.4,marginTop:4}}>Order #{orderNum} // {ts}</p>
-          <h1 style={{fontSize:28,fontWeight:900,textTransform:"uppercase",margin:"16px 0 8px",letterSpacing:"1px"}}>{dc.career}</h1>
-          <p style={{fontStyle:"italic",fontSize:13,opacity:0.6}}>"{dc.tagline}"</p>
+          <p style={{fontSize:9,letterSpacing:"3px",textTransform:"uppercase",opacity:0.4,marginBottom:4}}>Tax Invoice — Melbourne CBD</p>
+          <p style={{fontSize:8,letterSpacing:"1px",opacity:0.3,marginBottom:14}}>Order #{orderNum} // {ts}</p>
+          <h1 style={{fontSize:26,fontWeight:900,textTransform:"uppercase",marginBottom:8,letterSpacing:"0.5px",lineHeight:1.1}}>{dc.career}</h1>
+          <p style={{fontStyle:"italic",fontSize:13,opacity:0.55,lineHeight:1.5}}>"{dc.tagline}"</p>
         </div>
 
         {/* Order summary */}
@@ -463,65 +600,79 @@ function ResultScreen({answers,onRestart}){
         {/* Career mapping */}
         <div className="r-section">
           <span className="r-label">Cyber Career Mapping</span>
-          <p style={{fontSize:12,lineHeight:1.7,marginBottom:10}}>{dc.desc}</p>
-          {whatSays&&<p style={{fontSize:11,lineHeight:1.6,opacity:0.7,marginBottom:8,fontStyle:"italic"}}>{whatSays}</p>}
-          {personality&&<p style={{fontSize:11,lineHeight:1.6,opacity:0.7,fontStyle:"italic"}}>{personality}</p>}
+          <p style={{fontSize:12,lineHeight:1.7,marginBottom:whatSays||personality?10:0}}>{dc.desc}</p>
+          {whatSays&&<p style={{fontSize:11,lineHeight:1.6,opacity:0.65,marginBottom:personality?6:0,fontStyle:"italic"}}>{whatSays}</p>}
         </div>
 
         {/* Market demand */}
         <div className="r-section">
           <span className="r-label">Market Demand</span>
           <p style={{fontSize:12,fontWeight:700,marginBottom:6}}>{dc.demand}</p>
-          <p style={{fontSize:11,lineHeight:1.6,opacity:0.7}}>{dc.demandNote}</p>
+          <p style={{fontSize:11,lineHeight:1.6,opacity:0.65}}>{dc.demandNote}</p>
         </div>
 
         {/* Where you'd work */}
         <div className="r-section">
           <span className="r-label">Where You Would Work</span>
-          {dc.orgs.map((o,i)=><p key={i} style={{fontSize:11,lineHeight:1.7}}>— {o}</p>)}
+          {dc.orgs.map((o,i)=><p key={i} style={{fontSize:11,lineHeight:1.75}}>— {o}</p>)}
         </div>
 
         {/* Credentials */}
         <div className="r-section">
           <span className="r-label">Required Credentials</span>
-          {dc.quals.map((q,i)=><p key={i} style={{fontSize:11,lineHeight:1.7}}>— {q}</p>)}
+          {dc.quals.map((q,i)=><p key={i} style={{fontSize:11,lineHeight:1.75}}>— {q}</p>)}
         </div>
 
-        {/* Disclaimer */}
-        <div style={{background:"#f8f8f8",padding:"14px",fontSize:10,color:"#555",border:"1px solid #eee",marginBottom:20,lineHeight:1.65}}>
-          <strong>Disclaimer:</strong> For entertainment purposes only. Not career advice. Based on Australian market trends. Always consult a qualified career advisor before making significant professional changes.
-        </div>
-
-        {/* Did we get you right */}
-        <div style={{textAlign:"center",marginBottom:18}}>
-          <span className="r-label" style={{display:"block",textAlign:"center",marginBottom:12}}>Did We Get You Right?</span>
-          <div style={{display:"flex",gap:10,justifyContent:"center"}}>
+        {/* Did we get you right — inside receipt */}
+        <div style={{marginTop:4}}>
+          <span className="r-label" style={{textAlign:"center",display:"block",marginBottom:10}}>Did We Get You Right?</span>
+          <div style={{display:"flex",gap:8,justifyContent:"center",marginBottom:10}}>
             {[{val:"yes",label:"👍 That's me"},{val:"no",label:"👎 Not quite"}].map(btn=>(
               <button key={btn.val} onClick={()=>setReaction(btn.val)}
-                style={{padding:"10px 20px",fontSize:12,fontFamily:"'Courier Prime',monospace",border:"1px solid #000",background:reaction===btn.val?"#000":"transparent",color:reaction===btn.val?"#fff":"#000",cursor:"pointer",fontWeight:700,letterSpacing:"1px"}}>
+                style={{padding:"10px 18px",fontSize:11,fontFamily:"'Courier Prime',monospace",border:"1px solid #000",background:reaction===btn.val?"#000":"transparent",color:reaction===btn.val?"#fff":"#000",cursor:"pointer",fontWeight:700,letterSpacing:"1px"}}>
                 {btn.label}
               </button>
             ))}
           </div>
-          {reaction&&<p style={{fontSize:10,opacity:0.5,marginTop:10,letterSpacing:"1px",textTransform:"uppercase"}}>
-            {reaction==="yes"?"Your coffee order knows you. Share it.":"Try again — "+CAREER_COUNT+" careers in here."}
+          {reaction&&<p style={{fontSize:9,color:reaction==="yes"?"#000":"rgba(0,0,0,0.5)",marginBottom:0,letterSpacing:"1.5px",textTransform:"uppercase",textAlign:"center"}}>
+            {reaction==="yes"?"Your coffee order knows you. Share it below ↓":"Try again — "+CAREER_COUNT+" careers in here."}
           </p>}
         </div>
 
-        {/* Share bar */}
-        <span className="r-label" style={{textAlign:"center",display:"block"}}>Share Your Result</span>
-        <div className="share-bar">
-          <button className="s-btn" onClick={shareInstagram}>Instagram</button>
-          <button className="s-btn" onClick={shareLinkedIn}>LinkedIn</button>
-          <button className="s-btn" onClick={handleDownload}>{imgState==="saving"?"Saving…":"Download"}</button>
+        {/* Disclaimer — inside receipt */}
+        <div style={{marginTop:20,padding:"12px 14px",background:"#f4f4f2",fontSize:9,color:"#888",lineHeight:1.65,borderTop:"1px dashed rgba(0,0,0,0.1)"}}>
+          For entertainment only. Not career advice. Based on Australian market data. Always verify requirements with employers and registered training organisations.
         </div>
 
-      </div>{/* end receipt */}
+        </div>{/* end .receipt */}
+      </div>{/* end .receipt-wrap */}
 
-      <button onClick={onRestart}
-        style={{marginTop:32,display:"block",width:"100%",padding:"16px",background:"transparent",border:"none",color:"rgba(255,255,255,0.3)",fontSize:10,letterSpacing:"3px",textTransform:"uppercase",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
-        New Order ↺
-      </button>
+      {/* ── SHARE SECTION — outside the receipt, on dark background ── */}
+      <div className="share-section">
+        <span className="share-label">Share Your Result</span>
+
+        {/* Instagram — primary, full width */}
+        <button className="s-btn-primary" onClick={shareInstagram} style={{marginBottom:10}}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          Share to Instagram
+        </button>
+
+        {/* LinkedIn + Download — side by side */}
+        <div className="share-grid-3">
+          <button className="s-btn" onClick={shareLinkedIn}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </button>
+          <button className="s-btn" onClick={handleDownload}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            {imgState==="saving"?"Saving…":"Save Image"}
+          </button>
+          <button className="s-btn" onClick={onRestart}>
+            New Order ↺
+          </button>
+        </div>
+      </div>
+
     </div>
   );
 }
